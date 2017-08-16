@@ -36,7 +36,7 @@ public class DoubleRowStaggerdGridItemDecoration extends RecyclerView.ItemDecora
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setColor(Color.WHITE);
+        mPaint.setColor(Color.TRANSPARENT);
     }
 
     public DoubleRowStaggerdGridItemDecoration setColor(int color) {
@@ -53,12 +53,20 @@ public class DoubleRowStaggerdGridItemDecoration extends RecyclerView.ItemDecora
     public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
         super.getItemOffsets(outRect, view, parent, state);
 
+        StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
+        if (params.isFullSpan()) {
+            outRect.left = 0;
+            outRect.top = 0;
+            outRect.right = 0;
+            outRect.bottom = 0;
+            return;
+        }
+
         StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) parent.getLayoutManager();
         //画左边
         outRect.left = mHeight;
         //画上边
         outRect.top = mHeight;
-        StaggeredGridLayoutManager.LayoutParams params = (StaggeredGridLayoutManager.LayoutParams) view.getLayoutParams();
         //如果view不是左边的，则画右边分割线
         if (params.getSpanIndex() != 0) {
             outRect.right = mHeight;
